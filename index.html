@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Blood Donor - AI Emergency Response Network</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <!-- Top Announcement Bar -->
+    <div class="announcement-bar">
+        <div class="container announcement-content">
+            <span><i class="fa-solid fa-bolt-lightning pulse-icon"></i> <strong>REAL-TIME AI EMERGENCY MATCHING
+                    ACTIVE:</strong> Connecting donors to critical requests under 3 minutes.</span>
+            <span class="emergency-hotline"><i class="fa-solid fa-phone"></i> Emergency Hotline:
+                <strong>1-800-SMART-BLOOD</strong></span>
+        </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="brand-logo" onclick="switchView('home')">
+                <div class="logo-icon"><i class="fa-solid fa-droplet"></i></div>
+                <div class="brand-text">
+                    <span class="brand-title">Smart Blood Donor</span>
+                    <span class="brand-subtitle">Emergency Response AI</span>
+                </div>
+            </a>
+
+            <!-- Role & Info Navigation Tabs -->
+            <div class="nav-roles" id="navRoles">
+                <button class="nav-btn active" onclick="switchView('home')"><i class="fa-solid fa-house"></i>
+                    Home</button>
+                <button class="nav-btn" onclick="switchView('donor')"><i class="fa-solid fa-user-nurse"></i> Blood
+                    Donor</button>
+                <button class="nav-btn" onclick="switchView('hospital')"><i class="fa-solid fa-hospital"></i>
+                    Hospital</button>
+                <button class="nav-btn" onclick="switchView('bloodbank')"><i class="fa-solid fa-boxes-stacked"></i>
+                    Blood Bank</button>
+                <button class="nav-btn" onclick="switchView('patient')"><i class="fa-solid fa-bed-pulse"></i>
+                    Patient</button>
+                <button class="nav-btn admin-btn" onclick="switchView('admin')"><i class="fa-solid fa-user-shield"></i>
+                    Admin Portal</button>
+                <button class="nav-btn" onclick="switchView('about')"><i class="fa-solid fa-circle-info"></i> About
+                    Us</button>
+                <button class="nav-btn auth-nav-btn" id="btnLoginNav" onclick="openLoginModal()"><i class="fa-solid fa-right-to-bracket"></i> Login / Register</button>
+                <div id="navUserProfile" class="user-profile-badge" style="display: none;">
+                    <div class="up-info">
+                        <span id="navUserName" class="up-name">Guest</span>
+                        <span id="navUserRole" class="badge badge-success">Donor</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline-light logout-btn" onclick="handleLogout()" title="Logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn btn-emergency-pulse" onclick="quickEmergencyModal()"><i
+                        class="fa-solid fa-triangle-exclamation"></i> Emergency Request</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="main-content container">
+
+        <!-- =================================================================== -->
+        <!-- VIEW 1: HOME PAGE -->
+        <!-- =================================================================== -->
+        <section id="view-home" class="view-section active">
+            <!-- Hero Banner -->
+            <div class="hero-banner">
+                <div class="hero-grid">
+                    <div class="hero-text">
+                        <span class="hero-badge"><i class="fa-solid fa-brain"></i> AI-Powered Life Saving Network</span>
+                        <h1>Smart Blood Donation & Emergency Response Network AI</h1>
+                        <p class="hero-subtext">Connecting <span class="text-highlight-red">blood donors</span>, <span
+                                class="text-highlight-red">hospitals</span>, <span class="text-highlight-red">blood
+                                banks</span>, and <span class="text-highlight-red">patients</span> instantly using smart
+                            technology and <span class="text-highlight-red">artificial intelligence</span> during
+                            critical medical emergencies.</p>
+
+                        <div class="hero-cta-buttons">
+                            <button class="btn btn-primary btn-lg" onclick="switchView('donor')"><i
+                                    class="fa-solid fa-heart-pulse"></i> Register as Donor</button>
+                            <button class="btn btn-outline-light btn-lg" onclick="switchView('hospital')"><i
+                                    class="fa-solid fa-hospital-user"></i> Hospital / Blood Bank Access</button>
+                        </div>
+
+                        <!-- Live Stats Bar -->
+                        <div class="hero-stats-grid" id="liveHeroStats">
+                            <div class="stat-card">
+                                <div class="stat-num" id="statDonors">--</div>
+                                <div class="stat-label"><i class="fa-solid fa-users icon-red"></i> Registered Donors
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-num" id="statHospitals">--</div>
+                                <div class="stat-label"><i class="fa-solid fa-building-hospital icon-red"></i> Verified
+                                    Hospitals</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-num" id="statUnits">--</div>
+                                <div class="stat-label"><i class="fa-solid fa-database icon-red"></i> Blood Units In
+                                    Stock</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-num" id="statAccuracy">98.4%</div>
+                                <div class="stat-label"><i class="fa-solid fa-microchip icon-red"></i> AI Match Accuracy
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Blood Compatibility Widget -->
+                    <div class="hero-widget">
+                        <div class="glass-card compatibility-widget">
+                            <h3><i class="fa-solid fa-dna icon-red"></i> Blood Group Compatibility Checker</h3>
+                            <p class="widget-desc">Select recipient blood group to view compatible donors:</p>
+
+                            <div class="blood-group-selector">
+                                <button class="bg-btn active" onclick="checkCompatibility('O-')">O-</button>
+                                <button class="bg-btn" onclick="checkCompatibility('O+')">O+</button>
+                                <button class="bg-btn" onclick="checkCompatibility('A-')">A-</button>
+                                <button class="bg-btn" onclick="checkCompatibility('A+')">A+</button>
+                                <button class="bg-btn" onclick="checkCompatibility('B-')">B-</button>
+                                <button class="bg-btn" onclick="checkCompatibility('B+')">B+</button>
+                                <button class="bg-btn" onclick="checkCompatibility('AB-')">AB-</button>
+                                <button class="bg-btn" onclick="checkCompatibility('AB+')">AB+</button>
+                            </div>
+
+                            <div class="compatibility-results" id="compatibilityResults">
+                                <div class="compat-box">
+                                    <span class="compat-title">Can Receive Blood From:</span>
+                                    <div class="tags-container" id="canReceiveTags">
+                                        <span class="tag tag-universal">O- (Universal Donor)</span>
+                                    </div>
+                                </div>
+                                <div class="compat-box">
+                                    <span class="compat-title">Can Donate Blood To:</span>
+                                    <div class="tags-container" id="canGiveTags">
+                                        <span class="tag">O-</span><span class="tag">O+</span><span
+                                            class="tag">A-</span><span class="tag">A+</span><span
+                                            class="tag">B-</span><span class="tag">B+</span><span
+                                            class="tag">AB-</span><span class="tag">AB+</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Access Modules Grid on Home -->
+            <div class="home-modules-grid mt-4">
+                <div class="glass-card module-card" onclick="switchView('donor')">
+                    <div class="module-icon"><i class="fa-solid fa-user-nurse"></i></div>
+                    <h3>Blood Donors</h3>
+                    <p>Register as a donor, update your emergency availability, earn rewards, and save lives in your
+                        area.</p>
+                    <span class="btn-link">Access Donor Portal <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+                <div class="glass-card module-card" onclick="switchView('hospital')">
+                    <div class="module-icon"><i class="fa-solid fa-hospital"></i></div>
+                    <h3>Hospitals</h3>
+                    <p>Broadcast emergency blood requests, locate nearby verified donors using AI radar, and manage ICU
+                        requirements.</p>
+                    <span class="btn-link">Access Hospital Portal <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+                <div class="glass-card module-card" onclick="switchView('bloodbank')">
+                    <div class="module-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+                    <h3>Blood Banks</h3>
+                    <p>Track real-time stock levels for all 8 blood groups, manage expiry dates, and disburse inventory
+                        efficiently.</p>
+                    <span class="btn-link">Access Blood Bank Portal <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+                <div class="glass-card module-card" onclick="switchView('patient')">
+                    <div class="module-icon"><i class="fa-solid fa-bed-pulse"></i></div>
+                    <h3>Patients</h3>
+                    <p>Submit urgent blood requests, upload medical prescriptions, and track donor response status live.
+                    </p>
+                    <span class="btn-link">Access Patient Portal <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW 2: ABOUT US PAGE -->
+        <!-- =================================================================== -->
+        <section id="view-about" class="view-section">
+            <div class="about-section glass-card">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-circle-info icon-red"></i> About Us</h2>
+                    <p class="section-lead">Welcome to Smart Blood Donation & Emergency Response Network AI</p>
+                </div>
+
+                <div class="about-body">
+                    <p class="lead-paragraph"><strong>Our mission is simple:</strong> to help save lives by connecting
+                        blood donors, hospitals, blood banks, and patients quickly and efficiently.</p>
+
+                    <p>Finding the right blood during an emergency can be difficult and time-consuming. Our platform
+                        makes this process faster by using smart technology to connect patients with eligible blood
+                        donors nearby.</p>
+
+                    <p>Whether you are a blood donor, hospital, blood bank, or patient, our website provides a secure
+                        and easy-to-use platform where everyone can work together to provide timely blood support.</p>
+
+                    <!-- What We Offer -->
+                    <div class="about-grid-2">
+                        <div class="about-feature-box">
+                            <h3><i class="fa-solid fa-list-check icon-red"></i> What We Offer</h3>
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-circle-check icon-red"></i> Easy blood donor registration</li>
+                                <li><i class="fa-solid fa-circle-check icon-red"></i> Quick emergency blood requests
+                                </li>
+                                <li><i class="fa-solid fa-circle-check icon-red"></i> Nearby donor search using location
+                                </li>
+                                <li><i class="fa-solid fa-circle-check icon-red"></i> Blood bank and hospital management
+                                </li>
+                                <li><i class="fa-solid fa-circle-check icon-red"></i> Blood donation appointment booking
+                                </li>
+                                <li><i class="fa-solid fa-circle-check icon-red"></i> Instant email and SMS
+                                    notifications</li>
+                                <li><i class="fa-solid fa-circle-check icon-red"></i> AI-powered donor recommendations
+                                    and blood demand prediction</li>
+                                <li><i class="fa-solid fa-circle-check icon-red"></i> Blood inventory and donation
+                                    tracking</li>
+                            </ul>
+                        </div>
+
+                        <!-- Why Choose Our Platform -->
+                        <div class="about-feature-box">
+                            <h3><i class="fa-solid fa-star icon-red"></i> Why Choose Our Platform?</h3>
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-shield-halved icon-red"></i> Fast and secure blood donor
+                                    matching</li>
+                                <li><i class="fa-solid fa-clock-rotate-left icon-red"></i> Real-time emergency response
+                                </li>
+                                <li><i class="fa-solid fa-wand-magic-sparkles icon-red"></i> User-friendly interface
+                                </li>
+                                <li><i class="fa-solid fa-microscope icon-red"></i> Accurate blood group compatibility
+                                </li>
+                                <li><i class="fa-solid fa-lock icon-red"></i> Secure user accounts and data protection
+                                </li>
+                                <li><i class="fa-solid fa-mobile-screen-button icon-red"></i> Mobile-friendly design
+                                </li>
+                                <li><i class="fa-solid fa-robot icon-red"></i> Smart AI technology to improve response
+                                    time</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Vision & Mission Dual Card -->
+                    <div class="vision-mission-grid">
+                        <div class="vm-card card-vision">
+                            <div class="vm-icon"><i class="fa-solid fa-eye"></i></div>
+                            <h3>Our Vision</h3>
+                            <p>To build a reliable digital blood donation network where no patient suffers due to a
+                                shortage of blood and every willing donor can easily contribute to saving lives.</p>
+                        </div>
+                        <div class="vm-card card-mission">
+                            <div class="vm-icon"><i class="fa-solid fa-bullseye"></i></div>
+                            <h3>Our Mission</h3>
+                            <p>To make blood donation simple, fast, and accessible by using modern technology,
+                                artificial intelligence, and real-time communication to connect people when every second
+                                matters.</p>
+                        </div>
+                    </div>
+
+                    <!-- Join Us Banner -->
+                    <div class="join-us-banner">
+                        <div class="join-content">
+                            <h3><i class="fa-solid fa-hands-holding-heart icon-red"></i> Join Us</h3>
+                            <p>Every blood donation can save a life. Register as a donor, support your community, and
+                                become part of a network that makes emergency blood assistance faster, safer, and more
+                                effective.</p>
+                            <div class="quote-box">
+                                <span class="quote-text">"Donate Blood, Save Lives."</span>
+                            </div>
+                            <button class="btn btn-primary btn-lg" onclick="switchView('donor')"><i
+                                    class="fa-solid fa-user-plus"></i> Join the Life Saver Network Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW 3: BLOOD DONOR PORTAL -->
+        <!-- =================================================================== -->
+        <section id="view-donor" class="view-section">
+            <div class="section-title-bar">
+                <div>
+                    <h2><i class="fa-solid fa-user-nurse icon-red"></i> Blood Donor Portal</h2>
+                    <p>Manage your donor profile, emergency availability, reward points, and donation appointments.</p>
+                </div>
+                <div>
+                    <button class="btn btn-outline-light" onclick="openRegisterDonorModal()"><i
+                            class="fa-solid fa-user-plus"></i> Register New Donor</button>
+                </div>
+            </div>
+
+            <!-- Donor Selected Header Card -->
+            <div class="glass-card donor-profile-card">
+                <div class="dp-header">
+                    <div class="dp-avatar"><i class="fa-solid fa-user-check"></i></div>
+                    <div class="dp-info">
+                        <h3 id="donorProfileName">Dr. Alex Rivera</h3>
+                        <span class="dp-badge"><i class="fa-solid fa-droplet"></i> Blood Group: <strong
+                                id="donorProfileGroup">O-</strong> (Universal Donor)</span>
+                        <span class="dp-city"><i class="fa-solid fa-location-dot"></i> Central City</span>
+                    </div>
+                    <div class="dp-availability">
+                        <label class="switch-label">Emergency Availability:</label>
+                        <div class="toggle-container">
+                            <button id="btnToggleAvailable" class="btn btn-success"
+                                onclick="toggleDonorAvailability()"><i class="fa-solid fa-toggle-on"></i> AVAILABLE
+                                NOW</button>
+                        </div>
+                        <small class="text-muted">You will receive SMS/Alerts for nearby emergencies.</small>
+                    </div>
+                </div>
+
+                <div class="dp-stats">
+                    <div class="dp-stat-item">
+                        <div class="num" id="donorRewardPoints">450</div>
+                        <div class="lbl"><i class="fa-solid fa-award icon-red"></i> Reward Points</div>
+                    </div>
+                    <div class="dp-stat-item">
+                        <div class="num">Gold</div>
+                        <div class="lbl"><i class="fa-solid fa-medal icon-red"></i> LifeSaver Tier</div>
+                    </div>
+                    <div class="dp-stat-item">
+                        <div class="num" id="donorLastDonated">2026-05-10</div>
+                        <div class="lbl"><i class="fa-solid fa-calendar-check icon-red"></i> Last Donation</div>
+                    </div>
+                    <div class="dp-stat-item">
+                        <div class="num text-success">ELIGIBLE</div>
+                        <div class="lbl"><i class="fa-solid fa-circle-check icon-red"></i> Status</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2-col mt-4">
+                <!-- Incoming Emergency Requests Targeted for Donor -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-bell-ring icon-red"></i> Incoming Emergency Requests</h3>
+                        <span class="badge badge-danger">Live Alert</span>
+                    </div>
+                    <div class="card-body" id="donorEmergencyRequestsList">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- Book Appointment & Rewards Section -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-calendar-plus icon-red"></i> Book Donation Appointment</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="formBookAppointment" onsubmit="handleBookAppointment(event)">
+                            <div class="form-group">
+                                <label>Select Target Hospital / Blood Bank</label>
+                                <select id="appTargetSelect" class="form-control" required>
+                                    <option value="1|blood_bank|Red Cross Regional Blood Center">Red Cross Regional
+                                        Blood Center (Blood Bank)</option>
+                                    <option value="1|hospital|St. Jude Emergency Hospital">St. Jude Emergency Hospital
+                                        (Hospital)</option>
+                                    <option value="2|blood_bank|LifeStream Central Repository">LifeStream Central
+                                        Repository (Blood Bank)</option>
+                                </select>
+                            </div>
+                            <div class="form-grid-2">
+                                <div class="form-group">
+                                    <label>Preferred Date</label>
+                                    <input type="date" id="appDate" class="form-control" required value="2026-08-01">
+                                </div>
+                                <div class="form-group">
+                                    <label>Preferred Time</label>
+                                    <input type="time" id="appTime" class="form-control" required value="10:30">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-check"></i>
+                                Confirm Appointment (+100 Reward Points)</button>
+                        </form>
+
+                        <hr class="divider">
+
+                        <!-- Digital Certificate & Rewards -->
+                        <div class="rewards-box">
+                            <h4><i class="fa-solid fa-certificate icon-red"></i> Digital Life Saver Certificate</h4>
+                            <p>Earn reward points for every donation and redeem medical perks or print your official
+                                certificate.</p>
+                            <button class="btn btn-outline-light w-100" onclick="downloadCertificateModal()"><i
+                                    class="fa-solid fa-download"></i> View & Print LifeSaver Certificate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donation History Table -->
+            <div class="glass-card mt-4">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-history icon-red"></i> Personal Donation History</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Blood Group</th>
+                                <th>Units</th>
+                                <th>Points Earned</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donorHistoryTableBody">
+                            <tr>
+                                <td>2026-05-10</td>
+                                <td>Red Cross Regional Blood Center</td>
+                                <td><span class="blood-badge">O-</span></td>
+                                <td>1 Unit</td>
+                                <td><strong class="text-success">+100 Pts</strong></td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>2026-02-14</td>
+                                <td>Metropolitan Hospital Drive</td>
+                                <td><span class="blood-badge">O-</span></td>
+                                <td>1 Unit</td>
+                                <td><strong class="text-success">+120 Pts</strong></td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW 4: HOSPITAL PORTAL -->
+        <!-- =================================================================== -->
+        <section id="view-hospital" class="view-section">
+            <div class="section-title-bar">
+                <div>
+                    <h2><i class="fa-solid fa-hospital icon-red"></i> Hospital Portal</h2>
+                    <p>Broadcast emergency blood requests across other hospitals, search nearby verified donors, and
+                        manage blood requirements.</p>
+                </div>
+                <div>
+                    <span class="badge badge-success lg-badge"><i class="fa-solid fa-shield-check"></i> St. Jude
+                        Emergency Hospital (Verified)</span>
+                </div>
+            </div>
+
+            <div class="grid-2-col">
+                <!-- Emergency Blood Request Form -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-ambulance icon-red"></i> Create Emergency Blood Request</h3>
+                    </div>
+                    <form id="formHospitalEmergency" onsubmit="handleHospitalEmergencySubmit(event)">
+                        <div class="form-group">
+                            <label>Required Blood Group</label>
+                            <select id="hospBloodGroup" class="form-control" required>
+                                <option value="O-">O- (Universal Red Cells)</option>
+                                <option value="O+">O+</option>
+                                <option value="A-">A-</option>
+                                <option value="A+">A+</option>
+                                <option value="B-">B-</option>
+                                <option value="B+">B+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="AB+">AB+</option>
+                            </select>
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label>Units Needed</label>
+                                <input type="number" id="hospUnits" class="form-control" value="2" min="1" max="20"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label>Urgency Level</label>
+                                <select id="hospUrgency" class="form-control" required>
+                                    <option value="CRITICAL">CRITICAL (Immediate ICU/Surgery)</option>
+                                    <option value="HIGH">HIGH (Under 6 Hours)</option>
+                                    <option value="NORMAL">NORMAL (Scheduled Surgery)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Patient ID / Notes</label>
+                            <input type="text" id="hospNotes" class="form-control"
+                                placeholder="ICU Bed #4, Surgery Patient Trauma Unit" required>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100 btn-lg"><i
+                                class="fa-solid fa-paper-plane"></i> Broadcast Emergency Alert to Network</button>
+                    </form>
+                </div>
+
+                <!-- AI Nearby Donor Search Radar -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-radar icon-red"></i> AI Nearby Donor Radar</h3>
+                        <button class="btn btn-sm btn-outline-light" onclick="runAiDonorSearch()"><i
+                                class="fa-solid fa-arrows-rotate"></i> Refresh AI Radar</button>
+                    </div>
+                    <div class="radar-controls">
+                        <label>Filter Target Blood Group:</label>
+                        <select id="radarBloodGroup" class="form-control" onchange="runAiDonorSearch()">
+                            <option value="O-">O- (Universal)</option>
+                            <option value="A+">A+</option>
+                            <option value="B+">B+</option>
+                            <option value="AB+">AB+</option>
+                        </select>
+                    </div>
+                    <div class="donor-radar-list" id="aiDonorRadarList">
+                        <!-- Loaded dynamically via AI API -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hospital Active Requests Monitor -->
+            <div class="glass-card mt-4">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-list-check icon-red"></i> Hospital Active Emergency Log</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Req ID</th>
+                                <th>Blood Group</th>
+                                <th>Units</th>
+                                <th>Urgency</th>
+                                <th>Patient Note</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hospitalRequestsTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW 5: BLOOD BANK PORTAL -->
+        <!-- =================================================================== -->
+        <section id="view-bloodbank" class="view-section">
+            <div class="section-title-bar">
+                <div>
+                    <h2><i class="fa-solid fa-boxes-stacked icon-red"></i> Blood Bank Inventory Portal</h2>
+                    <p>Manage blood stock, monitor bag shelf life & expiry dates, and disburse supply to hospitals.</p>
+                </div>
+                <div>
+                    <span class="badge badge-success lg-badge"><i class="fa-solid fa-building-circle-check"></i> Red
+                        Cross Regional Blood Center</span>
+                </div>
+            </div>
+
+            <!-- Inventory Grid by Blood Group -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-vials icon-red"></i> Real-time Blood Stock Levels</h3>
+                    <button class="btn btn-primary btn-sm" onclick="openUpdateStockModal()"><i
+                            class="fa-solid fa-plus"></i> Update / Add Stock</button>
+                </div>
+                <div class="inventory-grid" id="bloodStockGrid">
+                    <!-- Dynamic inventory cards for 8 blood groups -->
+                </div>
+            </div>
+
+            <div class="grid-2-col mt-4">
+                <!-- Blood Expiry Management Card -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-triangle-exclamation icon-red"></i> Shelf Life & Expiry Alert Manager
+                        </h3>
+                    </div>
+                    <div class="expiry-list" id="expiryAlertList">
+                        <div class="expiry-item alert-critical">
+                            <div>
+                                <strong>B- Stock (3 Units)</strong>
+                                <div class="text-muted">Expiring in 5 days (2026-08-03)</div>
+                            </div>
+                            <button class="btn btn-sm btn-warning" onclick="alertHospitalNearExpiry('B-')">Prioritize
+                                for Hospital Dispatch</button>
+                        </div>
+                        <div class="expiry-item alert-warning">
+                            <div>
+                                <strong>O- Stock (8 Units)</strong>
+                                <div class="text-muted">Expiring in 14 days (2026-08-12)</div>
+                            </div>
+                            <span class="badge badge-success">Good Shelf Life</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blood Supply & Disbursement Log -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-truck-medical icon-red"></i> Quick Supply Disbursement</h3>
+                    </div>
+                    <form id="formDisburseSupply" onsubmit="handleSupplyDisburse(event)">
+                        <div class="form-group">
+                            <label>Destination Hospital</label>
+                            <select id="disburseHospitalSelect" class="form-control" required>
+                                <option value="St. Jude Emergency Hospital">St. Jude Emergency Hospital</option>
+                                <option value="Metropolitan Medical Center">Metropolitan Medical Center</option>
+                                <option value="City Hope Trauma Care">City Hope Trauma Care</option>
+                            </select>
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label>Blood Group</label>
+                                <select id="disburseBloodGroup" class="form-control" required>
+                                    <option value="O-">O-</option>
+                                    <option value="A+">A+</option>
+                                    <option value="B+">B+</option>
+                                    <option value="AB+">AB+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Units Disbursed</label>
+                                <input type="number" id="disburseUnits" class="form-control" value="2" min="1" max="10"
+                                    required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100"><i class="fa-solid fa-truck-ramp-box"></i>
+                            Confirm Supply Dispatch</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW 6: PATIENT PORTAL -->
+        <!-- =================================================================== -->
+        <section id="view-patient" class="view-section">
+            <div class="section-title-bar">
+                <div>
+                    <h2><i class="fa-solid fa-bed-pulse icon-red"></i> Patient Emergency Assistance Portal</h2>
+                    <p>Submit emergency blood requests, upload medical prescriptions, and track status live.</p>
+                </div>
+            </div>
+
+            <div class="grid-2-col">
+                <!-- Request Blood Form -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-heart-circle-bolt icon-red"></i> Patient Blood Request Form</h3>
+                    </div>
+                    <form id="formPatientRequest" onsubmit="handlePatientRequestSubmit(event)">
+                        <div class="form-group">
+                            <label>Patient Full Name</label>
+                            <input type="text" id="patName" class="form-control" value="Robert Green" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Phone Number</label>
+                            <input type="text" id="patPhone" class="form-control" value="+1 555-9988" required>
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label>Blood Group Required</label>
+                                <select id="patBloodGroup" class="form-control" required>
+                                    <option value="A+">A+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="B+">B+</option>
+                                    <option value="AB+">AB+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Units Needed</label>
+                                <input type="number" id="patUnits" class="form-control" value="2" min="1" max="10"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Hospital / Treatment Location</label>
+                            <input type="text" id="patHospital" class="form-control"
+                                value="Metropolitan Medical Center, Room 304" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-file-medical"></i> Upload Medical Prescription
+                                (Preview)</label>
+                            <input type="file" id="patPrescriptionFile" class="form-control" accept="image/*,.pdf"
+                                onchange="previewPrescriptionFile(this)">
+                            <div id="prescriptionPreview" class="mt-2 text-success small"></div>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100 btn-lg"><i
+                                class="fa-solid fa-paper-plane"></i> Submit Emergency Blood Request</button>
+                    </form>
+                </div>
+
+                <!-- Track Request Status Timeline -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-route icon-red"></i> Live Request Status Tracker</h3>
+                    </div>
+                    <div class="status-tracker-box">
+                        <div class="tracker-steps">
+                            <div class="step completed">
+                                <div class="step-icon"><i class="fa-solid fa-circle-check"></i></div>
+                                <div class="step-title">1. Request Broadcasted</div>
+                                <div class="step-desc">Sent to network AI engine</div>
+                            </div>
+                            <div class="step active">
+                                <div class="step-icon"><i class="fa-solid fa-microchip"></i></div>
+                                <div class="step-title">2. AI Donor Matching</div>
+                                <div class="step-desc">Finding top 3 nearest donors</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon"><i class="fa-solid fa-handshake"></i></div>
+                                <div class="step-title">3. Donor Accepted</div>
+                                <div class="step-desc">Donor en route to hospital</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon"><i class="fa-solid fa-syringe"></i></div>
+                                <div class="step-title">4. Donation Fulfilled</div>
+                                <div class="step-desc">Blood unit delivered safely</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nearby Verified Hospitals Map Placeholder -->
+                    <div class="nearby-hospitals-card mt-4">
+                        <h4><i class="fa-solid fa-hospital-user icon-red"></i> Nearby Hospitals with ICU Blood Units
+                        </h4>
+                        <ul class="hospital-mini-list mt-2">
+                            <li class="p-2 border-bottom"><strong>St. Jude Emergency Hospital</strong> - 1.2 km away |
+                                <span class="badge badge-success">24 ICU Beds</span></li>
+                            <li class="p-2"><strong>Metropolitan Medical Center</strong> - 2.8 km away | <span
+                                    class="badge badge-success">18 ICU Beds</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW 7: ADMIN PORTAL -->
+        <!-- =================================================================== -->
+        <section id="view-admin" class="view-section">
+            <div class="section-title-bar">
+                <div>
+                    <h2><i class="fa-solid fa-user-shield icon-red"></i> System Admin Dashboard</h2>
+                    <p>Manage users, verify hospitals and blood banks, monitor emergency requests, and manage AI
+                        prediction models.</p>
+                </div>
+            </div>
+
+            <!-- Admin Overview Metrics -->
+            <div class="admin-metrics-grid">
+                <div class="glass-card metric-card">
+                    <div class="m-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="m-data">
+                        <div class="m-val" id="adminTotalDonors">7</div>
+                        <div class="m-lbl">Active Donors</div>
+                    </div>
+                </div>
+                <div class="glass-card metric-card">
+                    <div class="m-icon"><i class="fa-solid fa-hospital"></i></div>
+                    <div class="m-data">
+                        <div class="m-val" id="adminTotalHospitals">3</div>
+                        <div class="m-lbl">Registered Hospitals</div>
+                    </div>
+                </div>
+                <div class="glass-card metric-card">
+                    <div class="m-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+                    <div class="m-data">
+                        <div class="m-val" id="adminTotalBanks">2</div>
+                        <div class="m-lbl">Blood Banks</div>
+                    </div>
+                </div>
+                <div class="glass-card metric-card">
+                    <div class="m-icon"><i class="fa-solid fa-brain"></i></div>
+                    <div class="m-data">
+                        <div class="m-val">98.4%</div>
+                        <div class="m-lbl">AI Predict Confidence</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification Queue for Hospitals & Blood Banks -->
+            <div class="glass-card mt-4">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-user-check icon-red"></i> Hospital & Blood Bank Verification Queue</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Entity Name</th>
+                                <th>Type</th>
+                                <th>City</th>
+                                <th>Contact Email</th>
+                                <th>Verification Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminVerificationTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- AI Prediction Model & Demand Forecasting Section -->
+            <div class="glass-card mt-4">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-chart-line icon-red"></i> AI Demand Prediction Model & Shortage Forecast
+                    </h3>
+                    <button class="btn btn-primary btn-sm" onclick="runAiDemandForecast()"><i
+                            class="fa-solid fa-rotate"></i> Re-Run AI Prediction Model</button>
+                </div>
+                <p class="text-muted">Predictive neural algorithm forecasting 30-day blood shortage risks by analyzing
+                    emergency request frequencies and stock degradation.</p>
+
+                <div class="table-responsive mt-3">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Blood Group</th>
+                                <th>Current Stock</th>
+                                <th>AI Predicted 30-Day Demand</th>
+                                <th>Shortage Risk Level</th>
+                                <th>AI Confidence</th>
+                                <th>Recommended Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="aiPredictionTableBody">
+                            <!-- Dynamic AI forecast rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal: Multi-Role User Login -->
+    <div id="modalLogin" class="modal-backdrop">
+        <div class="modal-box auth-modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-lock icon-red"></i> User Login</h3>
+                <button class="modal-close" onclick="closeModal('modalLogin')">&times;</button>
+            </div>
+            
+            <!-- Login Role Tabs -->
+            <div class="auth-role-tabs" id="loginRoleTabs">
+                <button class="auth-tab active" data-role="donor" onclick="selectLoginRole('donor')"><i class="fa-solid fa-user-nurse"></i> Donor</button>
+                <button class="auth-tab" data-role="hospital" onclick="selectLoginRole('hospital')"><i class="fa-solid fa-hospital"></i> Hospital</button>
+                <button class="auth-tab" data-role="blood_bank" onclick="selectLoginRole('blood_bank')"><i class="fa-solid fa-boxes-stacked"></i> Blood Bank</button>
+                <button class="auth-tab" data-role="admin" onclick="selectLoginRole('admin')"><i class="fa-solid fa-user-shield"></i> Admin</button>
+            </div>
+
+            <form id="formLogin" onsubmit="handleLoginSubmit(event)">
+                <input type="hidden" id="loginRole" value="donor">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" class="form-control" placeholder="name@example.com" required value="alex.rivera@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-input-wrap">
+                        <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required value="password123">
+                        <button type="button" class="btn-toggle-pw" onclick="togglePasswordVisibility('loginPassword')"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100 btn-lg mt-3"><i class="fa-solid fa-right-to-bracket"></i> Login to Account</button>
+            </form>
+
+            <div class="auth-quick-demo mt-3">
+                <small class="text-muted d-block mb-1">Quick Demo Accounts (1-Click Fill):</small>
+                <div class="demo-btns">
+                    <button class="btn btn-sm btn-outline-light" onclick="fillDemoCredentials('alex.rivera@example.com', 'password123', 'donor')">Donor Demo</button>
+                    <button class="btn btn-sm btn-outline-light" onclick="fillDemoCredentials('contact@stjudehospital.org', 'password123', 'hospital')">Hospital Demo</button>
+                    <button class="btn btn-sm btn-outline-light" onclick="fillDemoCredentials('stock@redcrossregional.org', 'password123', 'blood_bank')">Blood Bank Demo</button>
+                    <button class="btn btn-sm btn-outline-light" onclick="fillDemoCredentials('admin@smartblood.org', 'admin123', 'admin')">Admin Demo</button>
+                </div>
+            </div>
+
+            <div class="auth-footer mt-3 text-center">
+                <p>Don't have an account? <a href="#" onclick="closeModal('modalLogin'); openRegisterDonorModal(); return false;" class="text-highlight-red">Register New Account</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Register New Account -->
+    <div id="modalRegisterDonor" class="modal-backdrop">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-plus icon-red"></i> Register New Account</h3>
+                <button class="modal-close" onclick="closeModal('modalRegisterDonor')">&times;</button>
+            </div>
+            <form id="formRegisterDonor" onsubmit="handleRegisterDonorSubmit(event)">
+                <div class="form-group">
+                    <label>Account Role</label>
+                    <select id="regRole" class="form-control" onchange="toggleRegisterFields(this.value)" required>
+                        <option value="donor">Blood Donor</option>
+                        <option value="hospital">Hospital</option>
+                        <option value="blood_bank">Blood Bank</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label id="lblRegName">Full Name / Organization</label>
+                    <input type="text" id="regName" class="form-control" placeholder="e.g. John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="regEmail" class="form-control" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="regPhone" class="form-control" placeholder="+1 555-0199" required>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group" id="groupRegBloodGroup">
+                        <label>Blood Group</label>
+                        <select id="regBloodGroup" class="form-control">
+                            <option value="O-">O- (Universal)</option>
+                            <option value="O+">O+</option>
+                            <option value="A-">A-</option>
+                            <option value="A+">A+</option>
+                            <option value="B-">B-</option>
+                            <option value="B+">B+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="AB+">AB+</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" id="regCity" class="form-control" value="Central City" required>
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Password (Min 6 chars)</label>
+                        <input type="password" id="regPassword" class="form-control" placeholder="••••••••" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="regConfirmPassword" class="form-control" placeholder="••••••••" required minlength="6">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 btn-lg mt-3"><i class="fa-solid fa-heart"></i>
+                    Register & Join LifeSaver Network</button>
+            </form>
+            <div class="auth-footer mt-3 text-center">
+                <p>Already have an account? <a href="#" onclick="closeModal('modalRegisterDonor'); openLoginModal(); return false;" class="text-highlight-red">Log In Here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Update Stock -->
+    <div id="modalUpdateStock" class="modal-backdrop">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-plus-minus icon-red"></i> Update Blood Stock Inventory</h3>
+                <button class="modal-close" onclick="closeModal('modalUpdateStock')">&times;</button>
+            </div>
+            <form id="formUpdateStock" onsubmit="handleStockUpdateSubmit(event)">
+                <div class="form-group">
+                    <label>Blood Group</label>
+                    <select id="stockBloodGroup" class="form-control" required>
+                        <option value="O-">O-</option>
+                        <option value="O+">O+</option>
+                        <option value="A-">A-</option>
+                        <option value="A+">A+</option>
+                        <option value="B-">B-</option>
+                        <option value="B+">B+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="AB+">AB+</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Units Available</label>
+                    <input type="number" id="stockUnits" class="form-control" value="15" min="0" max="100" required>
+                </div>
+                <div class="form-group">
+                    <label>Bag Expiry Date</label>
+                    <input type="date" id="stockExpiry" class="form-control" required value="2026-09-01">
+                </div>
+                <button type="submit" class="btn btn-success w-100 btn-lg mt-3"><i class="fa-solid fa-floppy-disk"></i>
+                    Save Stock Level</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Certificate Preview -->
+    <div id="modalCertificate" class="modal-backdrop">
+        <div class="modal-box cert-modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-award icon-red"></i> Official Life Saver Certificate</h3>
+                <button class="modal-close" onclick="closeModal('modalCertificate')">&times;</button>
+            </div>
+            <div class="cert-body">
+                <div class="cert-frame">
+                    <i class="fa-solid fa-ribbon cert-ribbon"></i>
+                    <h2>CERTIFICATE OF APPRECIATION</h2>
+                    <p class="cert-sub">This is proudly presented to</p>
+                    <h3 class="cert-name" id="certDonorName">Dr. Alex Rivera</h3>
+                    <p class="cert-text">for extraordinary dedication and voluntary blood donation under the</p>
+                    <h4 class="cert-org">Smart Blood Donation & Emergency Response Network AI</h4>
+                    <p class="cert-quote">"Donate Blood, Save Lives."</p>
+                    <div class="cert-footer">
+                        <div>
+                            <strong>Points Earned: 450</strong><br>
+                            <small>Tier: Gold LifeSaver</small>
+                        </div>
+                        <div>
+                            <strong>AI System Certified</strong><br>
+                            <small>Verification ID: SBD-2026-9921</small>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary w-100 mt-3" onclick="window.print()"><i class="fa-solid fa-print"></i>
+                    Print / Save PDF Certificate</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <div class="logo-icon"><i class="fa-solid fa-droplet"></i></div>
+                <div>
+                    <strong>Smart Blood Donor AI</strong>
+                    <p>Saving lives through artificial intelligence & real-time blood donation matching.</p>
+                </div>
+            </div>
+            <div class="footer-quote">
+                <em>"Donate Blood, Save Lives."</em>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>
